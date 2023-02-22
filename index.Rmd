@@ -1,86 +1,85 @@
 ---
 title: "A3: SPL Library Checkouts"
+author: "Quinton Pharr"
+date: "2/22/2023"
 output: html_document
 ---
+
+```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+
+# load necessary ALL libraries
+library("dplyr")
+library("stringr")
+library("ggplot2")
+library("scales")
+library("maps")
+
+# load spl dataframe into variable
+spl_df <- read.csv("2022-2023-All-Checkouts-SPL-Data.csv", stringsAsFactors = FALSE)
+
+
+# source all R files
+source('summary_stats.R')
+source('chart1_example.R')
+source('chart2_example.R')
+source('chart3_example.R')
+```
 
 ### Introduction
 
 An introduction of the data and a description of the trends/books/items you are choosing to analyze (and why!)
+the dataset being used here is the SPL Library Checkouts dataset, which contains data on the number of checkouts for various materials such as books, ebooks, and audiobooks. This dataset also includes things like a checkout date, the number of checkouts, the title, author and subject of each thing checked out, as well as the publisher and publication year.
 
 ### Summary Information
 
-Write a summary paragraph of findings that includes the 5 values calculated from your summary information R script
+Assuming I understood it correctly I calculated the average number of checkouts for each item which I took to mean each book and so the average checkouts for each book came out to about **`r avg_checkouts_by_item`** total checkouts for each item from the dataset.
 
-These will likely be calculated using your DPLYR skills, answering questions such as:
+For the book I am interested in, Scythe: Arc of a Scythe Series, Book 1, which is a book that I really like. The month with the most checkouts for this book was month **`r most_checked_out_month_scythe`** or January, and the month with the least checkouts was month **`r least_checked_out_month_scythe`** or February.
 
-- What is the average number of checkouts for each item?
-- What is the month or year with the most/least checkouts for a book that you're interested in?
-- What is the month or year with the most/least checkouts for ebooks?
-- How has the number of print book checkouts changed over time?
+The month with the most checkouts for ebooks was month **`r most_checked_out_month_ebooks`** or January with **`r most_checked_out_month_ebooks_num`** monthly checkouts. And the month with the least checkouts for ebooks was month **`r least_checked_out_month_ebooks`** or February with **`r least_checked_out_month_ebooks_num`** monthly checkouts.
 
-Feel free to calculate and report values that you find relevant.
+Lastly, the number of print book checkouts seems to go down over time as we can see by looking at the first month which has **`r print_book_checkouts_by_month_high`** checkouts and looking at the last month which has **`r print_book_checkouts_by_month_low`** checkouts.
 
 ### The Dataset
 
-- Who collected/published the data?  
-- What are the parameters of the data (dates, number of checkouts, kinds of books, etc.)?
-- How was the data collected or generated?  
-- Why was the data collected?  
-- What, if any, ethical questions do you need to consider when working with this data?  
-- What are possible limitations or problems with this data?   (at least 200 words)
+- **Who collected/published the data?**
+The data itself is collected and published by The Seattle Public Library, but as we learned data collected from 2005 to 2017 was collected by George Legrady for an art piece.
 
+- **What are the parameters of the data (dates, number of checkouts, kinds of books, etc.)?**
+I talked about this a little bit in the intoduction but the parameters include things such as "UsageClass", "CheckoutType", "MaterialType", "CheckoutYear", "CheckoutMonth", "Checkouts", "Title", "ISBN", "Creator", "Subjects", "Publisher", "PublicationYear". Most of these are self explanitory, but "UsageClass" determines whether something was checked out online or in person. 
+
+- **How was the data collected or generated?**
+Also as I talked about in who collected the data, the data from 2005 to 2017 was collected from an art installation that anonymously tracked checkout data, and then after 2017 due to a change in patron confidentiality laws the library was able to track the checkout data themselves.
+
+- **Why was the data collected?**
+At first it was collected as a part of an art installation, but after 2017 it was collected as an effort to make data more public and accessible for research and usage, and as a way to see historic amounts of book checkout information without the dangers of having information on the person who actually checked it out. 
+
+- **What, if any, ethical questions do you need to consider when working with this data?**
+Personally I don't think there are many ethical questions with this data. Mostly this is because all the data collected was anonymous, and from looking at this data set there is realistically no way to know the personal information of anyone who checked out these books. I think the only thing that comes with that, is that there is a possibility that some of the data could be false because there is no way to verify that books being checked out are coming from real human beings, but even that isn't that much of an ethical concern.
+
+- **What are possible limitations or problems with this data?   (at least 200 words)**
+The primary and glaring issue that comes to mind when you look at this data for even a little bit or try searching for a specific title is the inconsistency of names/titles. This comes in the name of the book and how the author is presented in the data. For example, sometimes the author is listed as "John, Doe", whereas other times it could be listed as "Doe, John". Many times this comes in differences between ebooks and regular books but it can certainly lead to some issues. Another thing that comes to mind is just the sheer size of the data. While the data I am currently working with has been cut down quite a bit if you wanted to use the entire data set you would need a lot more processing power than the average person has on their computer. Even with the smaller data set, I am working with it still takes a very long time to load things, and this is only working with 1 year's worth of data, so I am probably not getting the whole picture. If I wanted to try and understand all the data, or do something with multiple years but not have to cut down on parameters I would need a much beefier system which is not something that I or many people have access to. 
 
 ### First Trends Over Time Chart
 
-Include a chart. Make sure to describe why you included the chart, and what patterns emerged
+This first chart is to show how the total checkouts change from month to month, you will notice a trend here that all of them start off very high for the first month of the year and then seem to drop down and even out. For this I looked at the categories "BOOK", "EBOOK", "SOUNDDISC", "AUDIOBOOK" because I figured these would have the most frequency. Book checkouts are the highest which is what I expected, but EBook checkouts are right on its tail and even overtake it slightly at some points. Sadly I was only able to work with the data from 2022/3 because my computer could not handle the bigger datasets, but I wonder if these trends stay similar throughout the other years. Lastly, I wanted to include this chart because I think this gives the best idea of the general trends that you will see for books. Most individual items you might search for will probably follow this general trend.
 
-The first chart that you will create and include will show the trend over time of your variable/topic/interest. Think carefully about what you want to communicate to your user (you may have to find relevant trends in the dataset first!). Here are some requirements to help guide your design:
-
-- Show more than one, but fewer than ~10 trends
-  - For example, two books, or 5 different mediums
-- You must have clear x and y axis labels
-- The chart needs a clear title 
-- You need a legend for your different line colors and a clear - legend title
-In your .Rmd file, make sure to describe why you included the chart, and what patterns emerged
-
-When we say "clear" or "human readable" titles and labels, that means that you should not just display the variable name.
-
-Here's an example of how to run an R script inside an RMarkdown file:
-
-``````{r, echo = FALSE, warning = FALSE, code = readLines("chart1_example.R")}
+``````{r, echo = FALSE, message = FALSE, warning = FALSE, code = readLines("chart1_example.R")}
 ```
 
 ### Second Trends Over Time Chart
 
-Include a chart. Make sure to describe why you included the chart, and what patterns emerged
+For this second plot I decided to plot the total checkouts by month for top authors. I wanted to look at this data mainly because I wanted to see who the "top" authors in this dataset were. And for the most part the names here are what I expected. The other thing I wanted to see was if the general trend of being super high in January, and then dropping off in the later months continued even for the top authors, and as you can see from the plot, even for the authors with the most checkouts the trend stays the same. Again I think it would be interesting to see if this general trend continues across other years. And I also think it would be interesting to see if the top authors generally stay similar or if there is a lot of change. 
 
-The second chart that you will create and include will show another trend over time of your variable/topic/interest. Think carefully about what you want to communicate to your user (you may have to find relevant trends in the dataset first!). Here are some requirements to help guide your design:
-
-- Show more than one, but fewer than ~10 trends
-  - For example, two books, or 5 different mediums
-- You must have clear x and y axis labels
-- The chart needs a clear title 
-- You need a legend for your different line colors and a clear - legend title
-In your .Rmd file, make sure to describe why you included the chart, and what patterns emerged
-
-When we say "clear" or "human readable" titles and labels, that means that you should not just display the variable name.
-
-Here's an example of how to run an R script inside an RMarkdown file:
-
-``````{r, echo = FALSE, code = readLines("chart2_example.R")}
+``````{r, echo = FALSE, message = FALSE, warning = FALSE, code = readLines("chart2_example.R")}
 ```
 
 ### Your Choice
 
-The last chart is up to you. It could be a line plot, scatter plot, histogram, bar plot, stacked bar plot, and more. Here are some requirements to help guide your design:
+Lastly I decided to do a bar or col plot of the top publishers. This time however instead of ploting the month by month data I just decided to look at the total checkouts for the year for each publisher and the numbers were higher than I imagined. I don't know why I thought it would be lower but I do think it is interesting to see that these 5 seem to have a good majority of the checkouts. I wonder what that says about the publishing industry and if there are some monopoly like companies that hold control over book publishing. I also did not show it in the graph here, but when I looked at the data month by month the trend seemed to stay the same as the last couple graphs we saw. There was a lot of checkouts in the first month, and as the year went on the checkouts dropped and evened out. 
 
-- You must have clear x and y axis labels
-- The chart needs a clear title 
-- You need a legend for your different line colors and a clear legend title
-
-Here's an example of how to run an R script inside an RMarkdown file:
-
-``````{r, echo = FALSE, code = readLines("chart2_example.R")}
+``````{r, echo = FALSE, message = FALSE, warning = FALSE, code = readLines("chart3_example.R")}
 ```
 
 

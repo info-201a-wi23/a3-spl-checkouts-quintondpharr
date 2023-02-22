@@ -23,6 +23,9 @@
 # RStudio files
 .Rproj.user/
 
+# data
+2022-2023-All-Checkouts-SPL-Data.csv
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
